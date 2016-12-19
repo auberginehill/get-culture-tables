@@ -31,7 +31,7 @@
       <td style="padding:6px"><strong>Description:</strong></td>
       <td style="padding:6px">Get-CultureTables accesses the System.Globalization.CultureInfo .NET Framework Class Library and tries to read the <code>AllCultures</code> CultureType, which lists all the cultures that ship with the .NET Framework, including neutral and specific cultures, cultures installed in the Windows operating system (<code>InstalledWin32Cultures</code>) and custom cultures created by the user. The info is written to a CSV-file (<code>cultures.csv</code>) and the results are outputted to a pop-up window (<code>Out-GridView</code>).
       <br />
-      <br />After checking that the computer is connected to the Internet Get-CultureTables tries to download culture related table formatted data from several different domains and write that info to separate files at <code>$path</code>. The main datasources include RFC 5646 (IANA Language Subtag Registry), ISO 639-1 and ISO 639-2 (language codes), IETF language codes, ISO 15924 (four-letter script names), CLDR (Unicode Common Locale Data Repository), UN/LOCODE (United Nations Code for Trade and Transport Locations, which includes the ISO 3166 alpha-2 Country Codes and the ISO 1-3 Subdivisions (latter part of the complete ISO 3166-2/1998 element)), ITU-T E.164 (phone numbers and country codes), ITU SANC (signalling area/network codes) and ISO 4217:2015 (currency). Please see the Outputs-section below for the full filelist.</td>
+      <br />After checking that the computer is connected to the Internet Get-CultureTables tries to download culture related data from several different domains and write that info to separate files at <code>$path</code>. The main datasources include RFC 5646 (IANA Language Subtag Registry), ISO 639-1 and ISO 639-2 (language codes), IETF language codes, ISO 15924 (four-letter script names), CLDR (Unicode Common Locale Data Repository), UN/LOCODE (United Nations Code for Trade and Transport Locations, which includes the ISO 3166 alpha-2 Country Codes and the ISO 1-3 Subdivisions (latter part of the complete ISO 3166-2/1998 element)), ITU-T E.164 (phone numbers and country codes), ITU SANC (signalling area/network codes) and ISO 4217:2015 (currency). Please see the Outputs-section below for the full filelist.</td>
    </tr>
    <tr>
       <td style="padding:6px"><strong>Homepage:</strong></td>
@@ -51,7 +51,7 @@
                     <td style="padding:6px"><a href="https://github.com/auberginehill/emoji-table">Emoji Table</a></td>
                 </tr>
                 <tr>
-                    <td style="padding:6px">ps1:</td> 
+                    <td style="padding:6px">ps1:</td>
                     <td style="padding:6px"><a href="http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx">Test Internet connection</a> (or one of the <a href="https://web.archive.org/web/20110612212629/http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx">archive.org versions</a>)</td>
                 </tr>
                 <tr>
@@ -127,87 +127,87 @@
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\cultures.csv</code></td>
                                 <td style="padding:6px">CSV</td>
-                                <td style="padding:6px">.NET Framework "<code>AllCultures</code>" CultureType</td>
+                                <td style="padding:6px">.NET Framework "<code>AllCultures</code>" CultureType in <code>System.Globalization.CultureInfo</code></td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\languages_IANA.txt</code></td>
                                 <td style="padding:6px">TXT</td>
-                                <td style="padding:6px">IANA Language Subtag Registry (RFC 5646)</td>
+                                <td style="padding:6px">Internet Assigned Numbers Authority (IANA) Language Subtag Registry (RFC 5646) original</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\languages_IANA.csv</code></td>
                                 <td style="padding:6px">CSV</td>
-                                <td style="padding:6px">IANA Language Subtag Registry (RFC 5646)</td>
+                                <td style="padding:6px">Internet Assigned Numbers Authority (IANA) Language Subtag Registry (RFC 5646)</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\languages_ISO_639.csv</code></td>
                                 <td style="padding:6px">CSV</td>
-                                <td style="padding:6px">ISO 639-1 and ISO 639-2 Language Codes</td>
+                                <td style="padding:6px">ISO 639-1 and ISO 639-2 Registration Authority (RA) Language Codes as hosted by US Library of Congress</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\languages_IETF.csv</code></td>
                                 <td style="padding:6px">CSV</td>
-                                <td style="padding:6px">IETF Language Codes</td>
+                                <td style="padding:6px">Internet Engineering Task Force (IETF) Language Codes</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\script_names_ISO_15924.csv</code></td>
                                 <td style="padding:6px">CSV</td>
-                                <td style="padding:6px">ISO 15924 Script Names</td>
+                                <td style="padding:6px">ISO 15924 four-letter Script Names</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_license.txt</code></td>
                                 <td style="padding:6px">TXT</td>
-                                <td style="padding:6px">Unicode Licence</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Licence</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_languageInfo.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Language Info</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Language Info</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_supplementalData.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Supplemental Data</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Supplemental Data</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_windowsZones.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Windows Zones</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Windows Zones</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_telephoneCodeData.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Telephone Code Data</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Telephone Code Data</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_subdivisions.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Subdivisions</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Subdivisions</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_numberingSystems.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Numbering Systems</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Numbering Systems</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_metaZones.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Meta Zones</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Meta Zones</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_likelySubtags.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Likely Subtags</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Likely Subtags</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_dayPeriods.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Day Periods</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Day Periods</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unicode_currency.xml</code></td>
                                 <td style="padding:6px">XML</td>
-                                <td style="padding:6px">Unicode Currency</td>
+                                <td style="padding:6px">Unicode Common Locale Data Repository (CLDR) Currency</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unlocode_notes.pdf</code></td>
@@ -222,7 +222,7 @@
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unlocode.csv</code></td>
                                 <td style="padding:6px">CSV</td>
-                                <td style="padding:6px">UN/LOCODE (United Nations Code for Trade and Transport Locations)</td>
+                                <td style="padding:6px">United Nations Code for Trade and Transport Locations (UN/LOCODE)</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\unlocode_recommendation.pdf</code></td>
@@ -237,37 +237,37 @@
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_country_codes_E.164.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU-T E.164 Phone Numbers and Country Codes</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) ITU-T E.164 Phone Numbers and Country Codes</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_network_codes_SANC.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU Signalling Area/Network Codes (SANC)</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) Signalling Area/Network Codes (SANC)</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_mobile_codes.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU Mobile Country or Geographical Area Codes</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) Mobile Country or Geographical Area Codes</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_geographical_non-std.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU List of Country or Geographical Area Codes for non standard facilities in telematic services</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) List of Country or Geographical Area Codes for non standard facilities in telematic services</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_geographical_codes.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU List of Data Country or Geographical Area Codes</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) List of Data Country or Geographical Area Codes</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_terrestrial_codes.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU List of terrestrial trunk radio mobile country codes</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) List of terrestrial trunk radio mobile country codes</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\itu_telegram_codes.pdf</code></td>
                                 <td style="padding:6px">PDF</td>
-                                <td style="padding:6px">ITU Five-letter Code Groups for the use of the International Public Telegram Service</td>
+                                <td style="padding:6px">International Telecommunication Union (ITU) Five-letter Code Groups for the use of the International Public Telegram Service</td>
                             </tr>
                             <tr>
                                 <td style="padding:6px"><code>$env:temp\currency_current_ISO_4217.xls</code></td>
@@ -311,7 +311,65 @@
         <td style="padding:6px">
             <ul>
                 <p>
-                    <li>Please note that the United Nations' dataset of esu lacitsitats rof snoiger lacihpargoeg dna sedoc aera ro yrtnuoc dradnats<sup>1</sup> (<a href="https://raw.githubusercontent.com/auberginehill/get-culture-tables/master/Get-CultureTables.ps1">Step 10</a>) is not working at all in this script by default due to the restrictive copyright in effect (only reading is permitted). If a permission is granted by the copyright owner (UN), however, the excellent data could, perhaps, be actually used for something.</li>
+                    <li>Please note that the United Nations' <a href="http://unstats.un.org/unsd/methods/m49/m49.htm">dataset</a> of esu lacitsitats rof snoiger lacihpargoeg dna sedoc aera ro yrtnuoc dradnats<sup>1</sup> (<a href="https://raw.githubusercontent.com/auberginehill/get-culture-tables/master/Get-CultureTables.ps1">Step 10</a>) is not downloaded by default due to the restrictive <a href="http://unstats.un.org/unsd/copyright.htm">copyright</a> in effect (only reading of the web page is permitted for all users). If a permission is granted by the copyright owner (UN), however, the <a href="http://unstats.un.org/unsd/methods/m49/m49alpha.htm">excellent</a> <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN</a> <a href="http://unstats.un.org/unsd/methods/m49/m49chang.htm">data</a> could, perhaps, be actually used for something.</li>
+                    <li><a href="http://www.iso.org/iso/home/standards/country_codes.htm">ISO 3166</a> has three parts:
+                        <ol>
+                            <table>
+                                <tr>
+                                    <td style="padding:6px"><strong>Name</strong></td>
+                                    <td style="padding:6px"><strong>Description</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px">ISO&nbsp;3166&#8209;1</td>
+                                    <td style="padding:6px">Officially assigned codes for countries.
+                                    <br />(n = ~249)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px">ISO&nbsp;3166&#8209;2</td>
+                                    <td style="padding:6px">Subdivision codes.
+                                    <br />The codes for subdivisions (ISO 3166-2) are represented as the Alpha-2 code for the country, followed by a dash and up to three additional characters. For example ID-RI is the Riau province of Indonesia and NG-RI is the Rivers province in Nigeria. The codes denoting the subdivision are usually obtained from national sources and stem from coding systems already in place in the country.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px">ISO&nbsp;3166&#8209;3</td>
+                                    <td style="padding:6px">Formerly used codes.
+                                    <br />i.e. codes that were once used to describe countries but are no longer in use.</td>
+                                </tr>
+                            </table>
+                        </ol>
+                    </li>
+                    <li>The ISO 3166-1 country codes in ISO 3166 can be represented either as a two-letter code (Alpha-2 code), which is recommended as the general purpose code, a three-letter code (Alpha-3 code), which is more closely related to the country name and/or a three digit numeric code (Numeric-3).
+                        <ol>
+                            <table>
+                                <tr>
+                                    <td style="padding:6px"><strong>Name</strong></td>
+                                    <td style="padding:6px"><strong>Description</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px">ISO 3166-1 Alpha-2 code</td>
+                                    <td style="padding:6px">A two-letter code that represents a country name, recommended as the general purpose code.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px">ISO 3166-1 Alpha-3 code</td>
+                                    <td style="padding:6px">A three-letter code that represents a country name, which is usually more closely related to the country name.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px">ISO 3166-1 Numeric-3 code</td>
+                                    <td style="padding:6px">A three-digit numeric code that represents a country name.</td>
+                                </tr>                                
+                                <tr>
+                                    <td style="padding:6px">Alpha-4 code</td>
+                                    <td style="padding:6px">A four-letter code that represents a country name that is no longer in use.</td>
+                                </tr>
+                            </table>
+                        </ol>
+                    </li>
+                    <li>The <a href="http://www.iso.org/iso/country_codes_glossary.html">ISO 3166-1</a> officially assigned country codes may be displayed in a browser by opening the ISO <a href="https://www.iso.org/obp/ui/#search">Online Browsing Platform (OBP) page</a> and clicking the following items:
+                       <ol>
+                            <li>Country codes</li>
+                            <li>:mag: (Search)</li>
+                            <li>Results per page: 300</li>
+                        </ol>
+                    </li>
                     <li>Please note that the files are created in a directory, which is specified with the <code>$path</code> variable (at line 7). The <code>$env:temp</code> variable points to the current temp folder. The default value of the <code>$env:temp</code> variable is <code>C:\Users\&lt;username&gt;\AppData\Local\Temp</code> (i.e. each user account has their own separate temp folder at path <code>%USERPROFILE%\AppData\Local\Temp</code>). To see the current temp path, for instance a command
                     <br />
                     <br /><code>[System.IO.Path]::GetTempPath()</code>
@@ -326,17 +384,16 @@
                         </ol>
                     </li>
                     <br /><sup>1</sup> In PowerShell, please try:
-                        <ol>                    
+                        <ol>
                             <br /><code>$string = "This is a test."</code>
                             <br /><code>([regex]::Matches($string,'.','RightToLeft') | ForEach { $_.Value }) -join ''</code>
-                        </ol>                            
-                    <br />Source: <a href="https://learn-powershell.net/2012/08/12/reversing-a-string-using-powershell/">Reversing a String Using PowerShell</a>
+                            <br />Source: <a href="https://learn-powershell.net/2012/08/12/reversing-a-string-using-powershell/">Reversing a String Using PowerShell</a>
+                        </ol>
                 </p>
             </ul>
         </td>
     </tr>
 </table>
-
 
 
 
@@ -392,13 +449,16 @@
                                     </table>
                                 </ol>
                         </p>
-                    <p>For more information, please type "<code>Get-ExecutionPolicy -List</code>" or "<code>help Set-ExecutionPolicy -Full</code>" or visit <a href="https://technet.microsoft.com/en-us/library/hh849812.aspx">Set-ExecutionPolicy</a>.</p>
+                    <p>For more information, please type "<code>Get-ExecutionPolicy -List</code>", "<code>help Set-ExecutionPolicy -Full</code>", "<code>help about_Execution_Policies</code>" or visit <a href="https://technet.microsoft.com/en-us/library/hh849812.aspx">Set-ExecutionPolicy</a> or <a href="http://go.microsoft.com/fwlink/?LinkID=135170.">about_Execution_Policies</a>.</p>
                     </li>
                 </p>
                 <p>
                     <li><code>New-Item -ItemType File -Path C:\Temp\Get-CultureTables.ps1</code><br />
-                    Creates an empty ps1-file to the <code>C:\Temp</code> directory. The <code>New-Item</code> cmdlet has an inherent <code>-NoClobber</code> mode built into it, so that the procedure will halt, if overwriting (replacing the contents) of an existing file is about to happen. Overwriting a file with the <code>New-Item</code> cmdlet requires using the <code>Force</code>.<br />
-                    For more information, please type "<code>help New-Item -Full</code>".</li>
+                    Creates an empty ps1-file to the <code>C:\Temp</code> directory. The <code>New-Item</code> cmdlet has an inherent <code>-NoClobber</code> mode built into it, so that the procedure will halt, if overwriting (replacing the contents) of an existing file is about to happen. Overwriting a file with the <code>New-Item</code> cmdlet requires using the <code>Force</code>. If the path name includes space characters, please enclose the path name in quotation marks (single or double):
+                        <ol>
+                            <code><br />New-Item -ItemType File -Path "C:\Folder Name\Get-CultureTables.ps1"</code>
+                        </ol>
+                    <br />For more information, please type "<code>help New-Item -Full</code>".</li>
                 </p>
             </ol>
         </td>
@@ -451,7 +511,7 @@
     </tr>
     <tr>
         <td style="padding:6px"><a href="https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx">CultureTypes Enumeration</a></td>
-    </tr>    
+    </tr>
     <tr>
         <td style="padding:6px">ASCII Art: <a href="http://www.figlet.org/">http://www.figlet.org/</a> and <a href="http://www.network-science.de/ascii/">ASCII Art Text Generator</a></td>
     </tr>
@@ -485,7 +545,7 @@
     </tr>
     <tr>
         <td style="padding:6px"><a href="https://github.com/auberginehill/get-installed-windows-updates">Get-InstalledWindowsUpdates</a></td>
-    </tr>    
+    </tr>
     <tr>
         <td style="padding:6px"><a href="https://github.com/auberginehill/get-ram-info">Get-RAMInfo</a></td>
     </tr>
