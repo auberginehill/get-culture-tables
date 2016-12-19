@@ -935,20 +935,6 @@ $empty_line | Out-String
 # Source: http://www.iso.org/iso/country_codes_glossary.html
 Start-Process -FilePath "https://www.iso.org/obp/ui/#search" | Out-Null
 
-
-        What is included in ISO 3166?
-
-            ISO 3166 has three parts: codes for countries (ISO 3166-1), subdivision codes (ISO 3166-2) and formerly used codes i.e. codes that were once used to describe countries but are no longer in use (ISO 3166-3).
-
-            The country codes can be represented either as a two-letter code (Alpha-2 code), which is recommended as the general purpose code, a three-letter code (Alpha-3 code), which is more closely related to the country name and a three digit numeric code (Numeric-3).
-
-                    Alpha-2 code – a two-letter code that represents a country name, recommended as the general purpose code.
-                    Alpha-3 code – a three-letter code that represents a country name, which is usually more closely related to the country name.
-                    Alpha-4 code – a four-letter code that represents a country name that is no longer in use. 
-
-            The codes for subdivisions (ISO 3166-2) are represented as the alpha-2 code for the country, followed by up to three characters. For example ID-RI is the Riau province of Indonesia and NG-RI is the Rivers province in Nigeria. The codes denoting the subdivision are usually obtained from national sources and stem from coding systems already in place in the country. 
-
-
 # Open the United Nations' esu lacitsitats rof snoiger lacihpargoeg dna sedoc aera ro yrtnuoc dradnats -dataset in the default browser**
 # Source: http://unstats.un.org/unsd/methods/m49/m49.htm
 # Copyright: http://unstats.un.org/unsd/copyright.htm
@@ -993,8 +979,8 @@ http://serverfault.com/questions/18872/how-to-zip-unzip-files-in-powershell#2016
 <#
 
 .SYNOPSIS
-Retrieves culture related table formatted data from the local computer and 
-the Internet and writes the info as files.
+Retrieves culture related data from the local computer and the Internet and 
+writes the datasets as table formatted files.
 
 .DESCRIPTION
 Get-CultureTables accesses the System.Globalization.CultureInfo .NET Framework 
@@ -1005,10 +991,10 @@ custom cultures created by the user. The info is written to a CSV-file
 (cultures.csv) and the results are outputted to a pop-up window (Out-GridView).
 
 After checking that the computer is connected to the Internet Get-CultureTables 
-tries to download culture related table formatted data from several different 
-domains and write that info to separate files at $path. The main datasources 
-include RFC 5646 (IANA Language Subtag Registry), ISO 639-1 and ISO 639-2 (language
-codes), IETF language codes, ISO 15924 (four-letter script names), CLDR (Unicode 
+tries to download culture related data from several different domains and write 
+that info to separate files at $path. The main datasources include RFC 5646 (IANA 
+Language Subtag Registry), ISO 639-1 and ISO 639-2 (language codes), 
+IETF language codes, ISO 15924 (four-letter script names), CLDR (Unicode 
 Common Locale Data Repository), UN/LOCODE (United Nations Code for Trade and 
 Transport Locations, which includes the ISO 3166 alpha-2 Country Codes and the 
 ISO 1-3 Subdivisions (latter part of the complete ISO 3166-2/1998 element)), 
@@ -1031,7 +1017,7 @@ connection is detected, after accessing several domains Get-CultureTables writes
 in the default scenario the following files at $path ($env:temp): 
 
 $env:temp\cultures.csv                  CSV     .NET Framework "AllCultures" CultureType
-$env:temp\languages_IANA.txt            TXT     IANA Language Subtag Registry (RFC 5646)
+$env:temp\languages_IANA.txt            TXT     IANA Language Subtag Registry (RFC 5646) original
 $env:temp\languages_IANA.csv            CSV     IANA Language Subtag Registry (RFC 5646)
 $env:temp\languages_ISO_639.csv         CSV     ISO 639-1 and ISO 639-2 Language Codes
 $env:temp\languages_IETF.csv            CSV     IETF Language Codes
@@ -1049,7 +1035,8 @@ $env:temp\unicode_dayPeriods.xml        XML     Unicode Day Periods
 $env:temp\unicode_currency.xml          XML     Unicode Currency
 $env:temp\unlocode_notes.pdf            PDF     UN/LOCODE Notes
 $env:temp\unlocode_subdivisions.csv     CSV     UN/LOCODE Subdivisions
-$env:temp\unlocode.csv                  CSV     UN/LOCODE
+$env:temp\unlocode.csv                  CSV     UN/LOCODE (United Nations Code for Trade and 
+                                                Transport Locations)
 $env:temp\unlocode_recommendation.pdf   PDF     UNECE Recommendation No. 16 on UN/LOCODE
 $env:temp\unlocode_manual.pdf           PDF     UN/LOCODE Manual
 $env:temp\itu_country_codes_E.164.pdf   PDF     ITU-T E.164 Phone Numbers and Country Codes
@@ -1061,7 +1048,7 @@ $env:temp\itu_geographical_codes.pdf    PDF     ITU List of Data Country or Geog
 $env:temp\itu_terrestrial_codes.pdf     PDF     ITU List of terrestrial trunk radio mobile country codes
 $env:temp\itu_telegram_codes.pdf        PDF     ITU Five-letter Code Groups for the use of the 
                                                 International Public Telegram Service
-$env:temp\currency_current_ISO_4217.xls XLS     ISO 4217:2015 Current
+$env:temp\currency_current_ISO_4217.xls XLS     ISO 4217:2015 Currency
 $env:temp\currency_fund_codes.doc       DOC     Fund Codes List 
 $env:temp\currency_historic.xls         XLS     List of codes for historic denominations of currencies
 
@@ -1071,10 +1058,48 @@ Please note that all the Unicode Common Locale Data Repository (CLDR) files (Ste
 (http://unicode.org/repos/cldr/tags/latest/unicode-license.txt).
 
 Please note that the United Nations' dataset of esu lacitsitats rof snoiger 
-lacihpargoeg dna sedoc aera ro yrtnuoc dradnats** (Step 10) is not working at all in 
-this script by default due to the restrictive copyright in effect (only reading is 
-permitted). If a permission is granted by the copyright owner (UN), however, the 
-excellent data could, perhaps, be actually used for something.
+lacihpargoeg dna sedoc aera ro yrtnuoc dradnats** (Step 10) is not downloaded by 
+default due to the restrictive copyright in effect (only reading of the web page is
+permitted for all users). If a permission is granted by the copyright owner (UN), 
+however, the excellent UN data could, perhaps, be actually used for something.
+
+ISO 3166 (http://www.iso.org/iso/home/standards/country_codes.htm) has three parts:
+
+    ISO 3166‑1  Officially assigned codes for countries. 
+                (n = ~249)
+    ISO 3166‑2	Subdivision codes. 
+                The codes for subdivisions (ISO 3166-2) are represented as the 
+                Alpha-2 code for the country, followed by a dash and up to three 
+                additional characters. For example ID-RI is the Riau province of 
+                Indonesia and NG-RI is the Rivers province in Nigeria. The codes 
+                denoting the subdivision are usually obtained from national sources
+                and stem from coding systems already in place in the country.
+    ISO 3166‑3	Formerly used codes. 
+                i.e. codes that were once used to describe countries but are no 
+                longer in use.
+
+The ISO 3166-1 country codes in ISO 3166 can be represented either as a two-letter 
+code (Alpha-2 code), which is recommended as the general purpose code, a three-letter 
+code (Alpha-3 code), which is more closely related to the country name and/or a 
+three digit numeric code (Numeric-3).
+
+    ISO 3166-1 Alpha-2 code	    A two-letter code that represents a country name,
+                                recommended as the general purpose code.
+    ISO 3166-1 Alpha-3 code	    A three-letter code that represents a country name, 
+                                which is usually more closely related to the country
+                                name.
+    ISO 3166-1 Numeric-3 code   A three-digit numeric code 
+                                that represents a country name.
+    Alpha-4 code	            A four-letter code that represents a country name 
+                                that is no longer in use.
+
+The ISO 3166 officially assigned country codes (n = ~249), may be displayed in a 
+browser by opening the ISO Online Browsing Platform (OBP) page 
+(https://www.iso.org/obp/ui/#search) and clicking the following items:
+
+    Country codes
+    [Magnifier] (Search)
+    Results per page: 300
 
 Please note that the files are created in a directory, which is specified with the
 $path variable (at line 7). The $env:temp variable points to the current temp
