@@ -148,74 +148,72 @@ $task = "Converting the RFC 5646 Language Subtag Registry list file to CSV..."
 Write-Progress -Id $id -Activity $activity -Status $status -CurrentOperation $task -PercentComplete (($task_number / $total_steps) * 100)
 
 $file_date_info = $raw_iana_language_data.Split("`n")[0]
-$iana_modified_data = $raw_iana_language_data.Replace("$file_date_info","").Replace('"','\/').Replace("\/","'").Replace(';',' -').Replace('Type: ',';Type = ').Replace("  ","¤¤  ").Replace('Tag: ',';Tag = ').Replace('Subtag: ',';Subtag = ').Replace('Description: ',';Description = ').Replace('Added: ',';Added = ').Replace('Deprecated: ',';Deprecated = ').Replace('Preferred-Value: ',';Preferred-Value = ').Replace('Comments: ',';Comments = ').Replace('Suppress-Script: ',';Suppress-Script = ').Replace('Scope: ',';Scope = ').Replace('Macrolanguage: ',';Macrolanguage = ').Replace('Prefix: ',';Prefix = ')
+    $info_obj = ConvertFrom-StringData (("Type = $file_date_info;Number = 0").Replace(";","`n"))
+    $entities += $info_obj
+$iana_modified_data = $raw_iana_language_data.Replace("$file_date_info","").Replace('"','\/').Replace("\/","'").Replace(';',' -').Replace('Type: ',';Type = ').Replace("  ","¤¤  ").Replace('Tag: ',';Tag = ').Replace('Subtag: ',';Subtag = ').Replace('Description: ',';Description = ').Replace('Added: ',';Added = ').Replace('Deprecated: ',';Deprecated = ').Replace('Preferred-Value: ',';Preferred-Value = ').Replace('Comments: ',';Comments = ').Replace('Suppress-Script: ',';Suppress-Script = ').Replace('Scope: ',';Scope = ').Replace('Macrolanguage: ',';Macrolanguage = ').Replace('Prefix: ',';Prefix = ').Replace("`n","").Replace("¤¤ ","")
 $registry_items = $iana_modified_data.Replace("%%","%%Number =").Split('%%') | Where { ($_.Trim() -ne "") }
 
 ForEach ($entry in $registry_items) {
 
     $global += 1
 
-    # Rename the duplicate Description-headers                                                # Credit: Roman Kuzmin: "Passing a function to Powershell's (replace) function"
-    # Regex.Replace Method (String, MatchEvaluator)
-    $regex_descr = [regex]::matches($entry,';Description =')
+    $counter_1 = 0
+    $counter_2 = 0
+    $pattern_1 = "Description ="
+    $pattern_2 = "Prefix ="
+    $lines = $entry -split ';'
+    $string_data = ForEach ($line in $lines) {
 
-    If ($regex_descr.Count -gt 1) { Write-Verbose "Multiple occurrences of the Description-header found in a single entry." }
+            # Replace the duplicate headers with generic header names
+            If ($line.Contains($pattern_1) -eq $true) {
+                Write-Verbose "Multiple occurrences of the Description-header found in a single entry."
+                $counter_1++
+                $line.Replace(($pattern_1.TrimEnd(" =")), "Description_" + $counter_1)
+            } ElseIf ($line.Contains($pattern_2) -eq $true) {
+                Write-Verbose "Multiple occurrences of the Prefix-header found in a single entry."
+                $counter_2++
+                $line.Replace(($pattern_2.TrimEnd(" =")), "Prefix_" + $counter_2)
+            } Else {
+                $line
+            } # Else
 
-        $counter_1 = 0
-        $callback_1 = {
-            $counter_1 += 1
-            "$($args[0])_" + $counter_1
-        } # callback_1
+        } # ForEach $line
 
-    $one = [regex]";Description"
-    $alfa = $one.Replace("$entry", $callback_1).Replace("Number =", ";Number = $($global)")
-
-
-    # Rename the Duplicate Prefix-headers                                                     # Credit: Roman Kuzmin: "Passing a function to Powershell's (replace) function"
-    # Regex.Replace Method (String, MatchEvaluator)
-    $regex_prefix = [regex]::matches($entry,';Prefix =')
-
-    If ($regex_prefix.Count -gt 1) { Write-Verbose "Multiple occurrences of the Prefix-header found in a single entry." }
-
-        $counter_2 = 0
-        $callback_2 = {
-            $counter_2 += 1
-            "$($args[0])_" + $counter_2
-        } # callback_2
-
-    $two = [regex]";Prefix"
-    $beta = $two.Replace("$alfa", $callback_2)
+    $alfa = $string_data -join ";"
+    $beta = $alfa.Replace("Number =", ";Number = $($global)")
 
 
-    # Adding missing headers to be able to reformat the data as a proper CSV-file
-    If (($beta -match ';Subtag =') -eq $false)              { $gamma = $beta.Replace(";Number =", ";Subtag =`n;Number =") }                 Else { $gamma = $beta }
-    If (($gamma -match ';Description_1 =') -eq $false)      { $delta = $gamma.Replace(";Number =", ";Description_1 =`n;Number =") }         Else { $delta = $gamma }
-    If (($delta -match ';Added =') -eq $false)              { $epsilon = $delta.Replace(";Number =", ";Added =`n;Number =") }               Else { $epsilon = $delta }
-    If (($epsilon -match ';Comments =') -eq $false)         { $zeta = $epsilon.Replace(";Number =", ";Comments =`n;Number =") }             Else { $zeta = $epsilon }
-    If (($zeta -match ';Deprecated =') -eq $false)          { $eta = $zeta.Replace(";Number =", ";Deprecated =`n;Number =") }               Else { $eta = $zeta }
-    If (($eta -match ';Macrolanguage =') -eq $false)        { $theta = $eta.Replace(";Number =", ";Macrolanguage  =`n;Number =") }          Else { $theta = $eta }
-    If (($theta -match ';Suppress-Script =') -eq $false)    { $iota = $theta.Replace(";Number =", ";Suppress-Script =`n;Number =") }        Else { $iota = $theta }
-    If (($iota -match ';Preferred-Value =') -eq $false)     { $kappa = $iota.Replace(";Number =", ";Preferred-Value =`n;Number =") }        Else { $kappa = $iota }
-    If (($kappa -match ';Scope =') -eq $false)              { $lamda = $kappa.Replace(";Number =", ";Scope =`n;Number =") }                 Else { $lamda = $kappa }
-    If (($lamda -match ';Prefix_1 =') -eq $false)           { $mu = $lamda.Replace(";Number =", ";Prefix_1 =`n;Number =") }                 Else { $mu = $lamda }
-    If (($mu -match ';Tag =') -eq $false)                   { $nu = $mu.Replace(";Number =", ";Tag =`n;Number =") }                         Else { $nu = $mu }
-    If (($nu -match ';Description_2 =') -eq $false)         { $xi = $nu.Replace(";Number =", ";Description_2 =`n;Number =") }               Else { $xi = $nu }
-    If (($xi -match ';Description_3 =') -eq $false)         { $omicron = $xi.Replace(";Number =", ";Description_3 =`n;Number =") }          Else { $omicron = $xi }
-    If (($omicron -match ';Description_4 =') -eq $false)    { $pi = $omicron.Replace(";Number =", ";Description_4 =`n;Number =") }          Else { $pi = $omicron }
-    If (($pi -match ';Description_5 =') -eq $false)         { $rho = $pi.Replace(";Number =", ";Description_5 =`n;Number =") }              Else { $rho = $pi }
-    If (($rho -match ';Description_6 =') -eq $false)        { $sigma = $rho.Replace(";Number =", ";Description_6 =`n;Number =") }           Else { $sigma = $rho }
-    If (($sigma -match ';Description_7 =') -eq $false)      { $tau = $sigma.Replace(";Number =", ";Description_7 =`n;Number =") }           Else { $tau = $sigma }
-    If (($tau -match ';Prefix_2 =') -eq $false)             { $upsilon = $tau.Replace(";Number =", ";Prefix_2 =`n;Number =") }              Else { $upsilon = $tau }
-    If (($upsilon -match ';Prefix_3 =') -eq $false)         { $phi = $upsilon.Replace(";Number =", ";Prefix_3 =`n;Number =") }              Else { $phi = $upsilon }
-    If (($phi -match ';Prefix_4 =') -eq $false)             { $chi = $phi.Replace(";Number =", ";Prefix_4 =`n;Number =") }                  Else { $chi = $phi }
-    If (($chi -match ';Prefix_5 =') -eq $false)             { $psi = $chi.Replace(";Number =", ";Prefix_5 =`n;Number =") }                  Else { $psi = $chi }
-    If (($psi -match ';Prefix_6 =') -eq $false)             { $omega = $psi.Replace(";Number =", ";Prefix_6 =`n;Number =") }                Else { $omega = $psi }
-    If (($omega -match ';Prefix_7 =') -eq $false)           { $alfa_alfa = $omega.Replace(";Number =", ";Prefix_7 =`n;Number =") }          Else { $alfa_alfa = $omega }
-    If (($alfa_alfa -match ';Prefix_8 =') -eq $false)       { $alfa_beta = $alfa_alfa.Replace(";Number =", ";Prefix_8 =`n;Number =") }      Else { $alfa_beta = $alfa_alfa }
-    If (($alfa_beta -match ';Prefix_9 =') -eq $false)       { $alfa_gamma = $alfa_beta.Replace(";Number =", ";Prefix_9 =`n;Number =") }     Else { $alfa_gamma = $alfa_beta }
-    If (($alfa_gamma -match ';Prefix_10 =') -eq $false)     { $alfa_delta = $alfa_gamma.Replace(";Number =", ";Prefix_10 =`n;Number =") }   Else { $alfa_delta = $alfa_gamma }
 
-    $output = $alfa_delta.Replace("`n","").Replace(";","`n").Replace("¤¤ ","")
+
+    # Add extra ("missing") headers (/empty data) for the CSV export
+    If (($beta -match ';Subtag =') -eq $false)              { $gamma = $beta.Replace(";Number =", ";Subtag =;Number =") }                 Else { $gamma = $beta }
+    If (($gamma -match ';Description_1 =') -eq $false)      { $delta = $gamma.Replace(";Number =", ";Description_1 =;Number =") }         Else { $delta = $gamma }
+    If (($delta -match ';Added =') -eq $false)              { $epsilon = $delta.Replace(";Number =", ";Added =;Number =") }               Else { $epsilon = $delta }
+    If (($epsilon -match ';Comments =') -eq $false)         { $zeta = $epsilon.Replace(";Number =", ";Comments =;Number =") }             Else { $zeta = $epsilon }
+    If (($zeta -match ';Deprecated =') -eq $false)          { $eta = $zeta.Replace(";Number =", ";Deprecated =;Number =") }               Else { $eta = $zeta }
+    If (($eta -match ';Macrolanguage =') -eq $false)        { $theta = $eta.Replace(";Number =", ";Macrolanguage  =;Number =") }          Else { $theta = $eta }
+    If (($theta -match ';Suppress-Script =') -eq $false)    { $iota = $theta.Replace(";Number =", ";Suppress-Script =;Number =") }        Else { $iota = $theta }
+    If (($iota -match ';Preferred-Value =') -eq $false)     { $kappa = $iota.Replace(";Number =", ";Preferred-Value =;Number =") }        Else { $kappa = $iota }
+    If (($kappa -match ';Scope =') -eq $false)              { $lamda = $kappa.Replace(";Number =", ";Scope =;Number =") }                 Else { $lamda = $kappa }
+    If (($lamda -match ';Prefix_1 =') -eq $false)           { $mu = $lamda.Replace(";Number =", ";Prefix_1 =;Number =") }                 Else { $mu = $lamda }
+    If (($mu -match ';Tag =') -eq $false)                   { $nu = $mu.Replace(";Number =", ";Tag =;Number =") }                         Else { $nu = $mu }
+    If (($nu -match ';Description_2 =') -eq $false)         { $xi = $nu.Replace(";Number =", ";Description_2 =;Number =") }               Else { $xi = $nu }
+    If (($xi -match ';Description_3 =') -eq $false)         { $omicron = $xi.Replace(";Number =", ";Description_3 =;Number =") }          Else { $omicron = $xi }
+    If (($omicron -match ';Description_4 =') -eq $false)    { $pi = $omicron.Replace(";Number =", ";Description_4 =;Number =") }          Else { $pi = $omicron }
+    If (($pi -match ';Description_5 =') -eq $false)         { $rho = $pi.Replace(";Number =", ";Description_5 =;Number =") }              Else { $rho = $pi }
+    If (($rho -match ';Description_6 =') -eq $false)        { $sigma = $rho.Replace(";Number =", ";Description_6 =;Number =") }           Else { $sigma = $rho }
+    If (($sigma -match ';Description_7 =') -eq $false)      { $tau = $sigma.Replace(";Number =", ";Description_7 =;Number =") }           Else { $tau = $sigma }
+    If (($tau -match ';Prefix_2 =') -eq $false)             { $upsilon = $tau.Replace(";Number =", ";Prefix_2 =;Number =") }              Else { $upsilon = $tau }
+    If (($upsilon -match ';Prefix_3 =') -eq $false)         { $phi = $upsilon.Replace(";Number =", ";Prefix_3 =;Number =") }              Else { $phi = $upsilon }
+    If (($phi -match ';Prefix_4 =') -eq $false)             { $chi = $phi.Replace(";Number =", ";Prefix_4 =;Number =") }                  Else { $chi = $phi }
+    If (($chi -match ';Prefix_5 =') -eq $false)             { $psi = $chi.Replace(";Number =", ";Prefix_5 =;Number =") }                  Else { $psi = $chi }
+    If (($psi -match ';Prefix_6 =') -eq $false)             { $omega = $psi.Replace(";Number =", ";Prefix_6 =;Number =") }                Else { $omega = $psi }
+    If (($omega -match ';Prefix_7 =') -eq $false)           { $alfa_alfa = $omega.Replace(";Number =", ";Prefix_7 =;Number =") }          Else { $alfa_alfa = $omega }
+    If (($alfa_alfa -match ';Prefix_8 =') -eq $false)       { $alfa_beta = $alfa_alfa.Replace(";Number =", ";Prefix_8 =;Number =") }      Else { $alfa_beta = $alfa_alfa }
+    If (($alfa_beta -match ';Prefix_9 =') -eq $false)       { $alfa_gamma = $alfa_beta.Replace(";Number =", ";Prefix_9 =;Number =") }     Else { $alfa_gamma = $alfa_beta }
+    If (($alfa_gamma -match ';Prefix_10 =') -eq $false)     { $alfa_delta = $alfa_gamma.Replace(";Number =", ";Prefix_10 =;Number =") }   Else { $alfa_delta = $alfa_gamma }
+
+    $output = $alfa_delta.Replace(";","`n")
 
     $obj = ConvertFrom-StringData $output
 
@@ -241,7 +239,7 @@ ForEach ($item in $entities) {
                                 'Description_6'                   = $item.Get_Item("Description_6")
                                 'Description_7'                   = $item.Get_Item("Description_7")
                                 'Macrolanguage'                   = $item.Get_Item("Macrolanguage")
-                                'Number'                          = If (([int]$item.Get_Item("Number")) -lt 1) { 0 } Else { [int]$item.Get_Item("Number") - 1 }
+                                'Number'                          = [int]$item.Get_Item("Number")
                                 'Preferred-Value'                 = $item.Get_Item("Preferred-Value")
                                 'Prefix_1'                        = $item.Get_Item("Prefix_1")
                                 'Prefix_2'                        = $item.Get_Item("Prefix_2")
@@ -257,12 +255,11 @@ ForEach ($item in $entities) {
                                 'Subtag'                          = $item.Get_Item("Subtag")
                                 'Suppress-Script'                 = $item.Get_Item("Suppress-Script")
                                 'Tag'                             = $item.Get_Item("Tag")
-                                'Type'                            = If (([int]$item.Get_Item("Number")) -lt 1) { $file_date_info } Else { $item.Get_Item("Type") }
+                                'Type'                            = $item.Get_Item("Type")
 
                     } # New-Object
 
 } # ForEach $item
-
 
 $languages.PSObject.TypeNames.Insert(0,"Languages")
 $languages_selection = $languages | Select-Object 'Type','Number','Subtag','Description_1','Added','Comments','Deprecated','Macrolanguage','Suppress-Script','Preferred-Value','Scope','Prefix_1','Tag','Description_2','Description_3','Description_4','Description_5','Description_6','Description_7','Prefix_2','Prefix_3','Prefix_4','Prefix_5','Prefix_6','Prefix_7','Prefix_8','Prefix_9','Prefix_10'
@@ -806,7 +803,7 @@ $itu_telegram_codes | Out-File "$path\itu_telegram_codes.pdf" -Encoding Default
 
 
         So if a permission from the copyright owner (UN) is obtained, the following script could perhaps work:
-       
+
         # Note: Without the ancillary supporting html style files (stylesheet/css), the pages will probably be broken. The source code for the tables themselves, however, seems to be in pretty straight forward basic html-format.
         # Note: Please make sure to obtain a permission from the copyright owner before downloading any files listed below (in this Step 10).
         # Copyright: http://unstats.un.org/unsd/copyright.htm
@@ -886,9 +883,9 @@ $runtime = ($end_time) - ($start_time)
     } ElseIf ($runtime.Milliseconds -gt 1) {
         $runtime_result = [string]$runtime.Milliseconds + ' milliseconds'
     } ElseIf ($runtime.Milliseconds -eq 1) {
-        $runtime_result = [string]$runtime.Milliseconds + ' millisecond'       
+        $runtime_result = [string]$runtime.Milliseconds + ' millisecond'
     } ElseIf (($runtime.Milliseconds -gt 0) -and ($runtime.Milliseconds -lt 1)) {
-        $runtime_result = [string]$runtime.Milliseconds + ' milliseconds'                
+        $runtime_result = [string]$runtime.Milliseconds + ' milliseconds'
     } Else {
         $runtime_result = [string]''
     } # else (if)
@@ -962,7 +959,6 @@ Start-Process -FilePath "http://unstats.un.org/unsd/methods/m49/m49chang.htm" | 
 
 
 http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx                    # ps1: "Test Internet connection"
-http://stackoverflow.com/questions/8163061/passing-a-function-to-powershells-replace-function           # Roman Kuzmin: "Passing a function to Powershell's (replace) function"
 http://serverfault.com/questions/18872/how-to-zip-unzip-files-in-powershell#201604                      # Ameer Deen: "How to zip/unzip files in Powershell?"
 
 
@@ -979,32 +975,32 @@ http://serverfault.com/questions/18872/how-to-zip-unzip-files-in-powershell#2016
 <#
 
 .SYNOPSIS
-Retrieves culture related data from the local computer and the Internet and 
+Retrieves culture related data from the local computer and the Internet and
 writes the datasets as table formatted files.
 
 .DESCRIPTION
-Get-CultureTables accesses the System.Globalization.CultureInfo .NET Framework 
+Get-CultureTables accesses the System.Globalization.CultureInfo .NET Framework
 Class Library and tries to read the AllCultures CultureType, which lists all the
 cultures that ship with the .NET Framework, including neutral and specific cultures,
-cultures installed in the Windows operating system (InstalledWin32Cultures) and 
-custom cultures created by the user. The info is written to a CSV-file 
+cultures installed in the Windows operating system (InstalledWin32Cultures) and
+custom cultures created by the user. The info is written to a CSV-file
 (cultures.csv) and the results are outputted to a pop-up window (Out-GridView).
 
-After checking that the computer is connected to the Internet Get-CultureTables 
-tries to download culture related data from several different domains and write 
-that info to separate files at $path. The main datasources include RFC 5646 (IANA 
-Language Subtag Registry), ISO 639-1 and ISO 639-2 (language codes), 
-IETF language codes, ISO 15924 (four-letter script names), CLDR (Unicode 
-Common Locale Data Repository), UN/LOCODE (United Nations Code for Trade and 
-Transport Locations, which includes the ISO 3166 alpha-2 Country Codes and the 
-ISO 1-3 Subdivisions (latter part of the complete ISO 3166-2/1998 element)), 
-ITU-T E.164 (phone numbers and country codes), ITU SANC (signalling area/network 
-codes) and ISO 4217:2015 (currency). Please see the Outputs-section below for the 
+After checking that the computer is connected to the Internet Get-CultureTables
+tries to download culture related data from several different domains and write
+that info to separate files at $path. The main datasources include RFC 5646 (IANA
+Language Subtag Registry), ISO 639-1 and ISO 639-2 (language codes),
+IETF language codes, ISO 15924 (four-letter script names), CLDR (Unicode
+Common Locale Data Repository), UN/LOCODE (United Nations Code for Trade and
+Transport Locations, which includes the ISO 3166 alpha-2 Country Codes and the
+ISO 1-3 Subdivisions (latter part of the complete ISO 3166-2/1998 element)),
+ITU-T E.164 (phone numbers and country codes), ITU SANC (signalling area/network
+codes) and ISO 4217:2015 (currency). Please see the Outputs-section below for the
 full filelist.
 
 .OUTPUTS
-Displays the local machine culture information in a pop-up window 
-"$cultures_selection" 
+Displays the local machine culture information in a pop-up window
+"$cultures_selection"
 
 
         Name                                Description
@@ -1012,9 +1008,9 @@ Displays the local machine culture information in a pop-up window
         $cultures_selection                 Displays a list of .NET Framework cultures
 
 
-and writes that data to a file as described below. Also, if a working internet 
-connection is detected, after accessing several domains Get-CultureTables writes 
-in the default scenario the following files at $path ($env:temp): 
+and writes that data to a file as described below. Also, if a working internet
+connection is detected, after accessing several domains Get-CultureTables writes
+in the default scenario the following files at $path ($env:temp):
 
 $env:temp\cultures.csv                  CSV     .NET Framework "AllCultures" CultureType
 $env:temp\languages_IANA.txt            TXT     IANA Language Subtag Registry (RFC 5646) original
@@ -1035,7 +1031,7 @@ $env:temp\unicode_dayPeriods.xml        XML     Unicode Day Periods
 $env:temp\unicode_currency.xml          XML     Unicode Currency
 $env:temp\unlocode_notes.pdf            PDF     UN/LOCODE Notes
 $env:temp\unlocode_subdivisions.csv     CSV     UN/LOCODE Subdivisions
-$env:temp\unlocode.csv                  CSV     UN/LOCODE (United Nations Code for Trade and 
+$env:temp\unlocode.csv                  CSV     UN/LOCODE (United Nations Code for Trade and
                                                 Transport Locations)
 $env:temp\unlocode_recommendation.pdf   PDF     UNECE Recommendation No. 16 on UN/LOCODE
 $env:temp\unlocode_manual.pdf           PDF     UN/LOCODE Manual
@@ -1046,55 +1042,55 @@ $env:temp\itu_geographical_non-std.pdf  PDF     ITU List of Country or Geographi
                                                 for non standard facilities in telematic services
 $env:temp\itu_geographical_codes.pdf    PDF     ITU List of Data Country or Geographical Area Codes
 $env:temp\itu_terrestrial_codes.pdf     PDF     ITU List of terrestrial trunk radio mobile country codes
-$env:temp\itu_telegram_codes.pdf        PDF     ITU Five-letter Code Groups for the use of the 
+$env:temp\itu_telegram_codes.pdf        PDF     ITU Five-letter Code Groups for the use of the
                                                 International Public Telegram Service
 $env:temp\currency_current_ISO_4217.xls XLS     ISO 4217:2015 Currency
-$env:temp\currency_fund_codes.doc       DOC     Fund Codes List 
+$env:temp\currency_fund_codes.doc       DOC     Fund Codes List
 $env:temp\currency_historic.xls         XLS     List of codes for historic denominations of currencies
 
 .NOTES
-Please note that all the Unicode Common Locale Data Repository (CLDR) files (Step 7) 
-(unicode_*.*) are bound to the Unicode License unicode_license.txt 
+Please note that all the Unicode Common Locale Data Repository (CLDR) files (Step 7)
+(unicode_*.*) are bound to the Unicode License unicode_license.txt
 (http://unicode.org/repos/cldr/tags/latest/unicode-license.txt).
 
-Please note that the United Nations' dataset of esu lacitsitats rof snoiger 
-lacihpargoeg dna sedoc aera ro yrtnuoc dradnats** (Step 10) is not downloaded by 
+Please note that the United Nations' dataset of esu lacitsitats rof snoiger
+lacihpargoeg dna sedoc aera ro yrtnuoc dradnats** (Step 10) is not downloaded by
 default due to the restrictive copyright in effect (only reading of the web page is
-permitted for all users). If a permission is granted by the copyright owner (UN), 
+permitted for all users). If a permission is granted by the copyright owner (UN),
 however, the excellent UN data could, perhaps, be actually used for something.
 
 ISO 3166 (http://www.iso.org/iso/home/standards/country_codes.htm) has three parts:
 
-    ISO 3166‑1  Officially assigned codes for countries. 
+    ISO 3166‑1  Officially assigned codes for countries.
                 (n = ~249)
-    ISO 3166‑2	Subdivision codes. 
-                The codes for subdivisions (ISO 3166-2) are represented as the 
-                Alpha-2 code for the country, followed by a dash and up to three 
-                additional characters. For example ID-RI is the Riau province of 
-                Indonesia and NG-RI is the Rivers province in Nigeria. The codes 
+    ISO 3166‑2	Subdivision codes.
+                The codes for subdivisions (ISO 3166-2) are represented as the
+                Alpha-2 code for the country, followed by a dash and up to three
+                additional characters. For example ID-RI is the Riau province of
+                Indonesia and NG-RI is the Rivers province in Nigeria. The codes
                 denoting the subdivision are usually obtained from national sources
                 and stem from coding systems already in place in the country.
-    ISO 3166‑3	Formerly used codes. 
-                i.e. codes that were once used to describe countries but are no 
+    ISO 3166‑3	Formerly used codes.
+                i.e. codes that were once used to describe countries but are no
                 longer in use.
 
-The ISO 3166-1 country codes in ISO 3166 can be represented either as a two-letter 
-code (Alpha-2 code), which is recommended as the general purpose code, a three-letter 
-code (Alpha-3 code), which is more closely related to the country name and/or a 
+The ISO 3166-1 country codes in ISO 3166 can be represented either as a two-letter
+code (Alpha-2 code), which is recommended as the general purpose code, a three-letter
+code (Alpha-3 code), which is more closely related to the country name and/or a
 three digit numeric code (Numeric-3).
 
     ISO 3166-1 Alpha-2 code	    A two-letter code that represents a country name,
                                 recommended as the general purpose code.
-    ISO 3166-1 Alpha-3 code	    A three-letter code that represents a country name, 
+    ISO 3166-1 Alpha-3 code	    A three-letter code that represents a country name,
                                 which is usually more closely related to the country
                                 name.
-    ISO 3166-1 Numeric-3 code   A three-digit numeric code 
+    ISO 3166-1 Numeric-3 code   A three-digit numeric code
                                 that represents a country name.
-    Alpha-4 code	            A four-letter code that represents a country name 
+    Alpha-4 code	            A four-letter code that represents a country name
                                 that is no longer in use.
 
-The ISO 3166 officially assigned country codes (n = ~249), may be displayed in a 
-browser by opening the ISO Online Browsing Platform (OBP) page 
+The ISO 3166 officially assigned country codes (n = ~249), may be displayed in a
+browser by opening the ISO Online Browsing Platform (OBP) page
 (https://www.iso.org/obp/ui/#search) and clicking the following items:
 
     Country codes
@@ -1121,7 +1117,7 @@ http://www.eightforums.com/tutorials/23500-temporary-files-folder-change-locatio
 
     Homepage:           https://github.com/auberginehill/get-culture-tables
     Short URL:          http://tinyurl.com/js78k4h
-    Version:            1.0
+    Version:            1.1
 
 .EXAMPLE
 ./Get-CultureTables
@@ -1133,9 +1129,9 @@ Display the help file.
 
 .EXAMPLE
 Set-ExecutionPolicy remotesigned
-This command is altering the Windows PowerShell rights to enable script execution for 
-the default (LocalMachine) scope. Windows PowerShell has to be run with elevated rights 
-(run as an administrator) to actually be able to change the script execution properties. 
+This command is altering the Windows PowerShell rights to enable script execution for
+the default (LocalMachine) scope. Windows PowerShell has to be run with elevated rights
+(run as an administrator) to actually be able to change the script execution properties.
 The default value of the default (LocalMachine) scope is "Set-ExecutionPolicy restricted".
 
 
@@ -1169,8 +1165,8 @@ or http://go.microsoft.com/fwlink/?LinkID=135170.
 New-Item -ItemType File -Path C:\Temp\Get-CultureTables.ps1
 Creates an empty ps1-file to the C:\Temp directory. The New-Item cmdlet has an inherent -NoClobber mode
 built into it, so that the procedure will halt, if overwriting (replacing the contents) of an existing
-file is about to happen. Overwriting a file with the New-Item cmdlet requires using the Force. If the 
-path name includes space characters, please enclose the path name in quotation marks (single or double): 
+file is about to happen. Overwriting a file with the New-Item cmdlet requires using the Force. If the
+path name includes space characters, please enclose the path name in quotation marks (single or double):
 
     New-Item -ItemType File -Path "C:\Folder Name\Get-CultureTables.ps1"
 
@@ -1178,9 +1174,8 @@ For more information, please type "help New-Item -Full".
 
 .LINK
 
-http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx       
-http://stackoverflow.com/questions/8163061/passing-a-function-to-powershells-replace-function        
-http://serverfault.com/questions/18872/how-to-zip-unzip-files-in-powershell#201604    
+http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx
+http://serverfault.com/questions/18872/how-to-zip-unzip-files-in-powershell#201604
 https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx
 
 #>
