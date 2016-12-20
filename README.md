@@ -454,7 +454,8 @@
                     <li><code>New-Item -ItemType File -Path C:\Temp\Get-CultureTables.ps1</code><br />
                     Creates an empty ps1-file to the <code>C:\Temp</code> directory. The <code>New-Item</code> cmdlet has an inherent <code>-NoClobber</code> mode built into it, so that the procedure will halt, if overwriting (replacing the contents) of an existing file is about to happen. Overwriting a file with the <code>New-Item</code> cmdlet requires using the <code>Force</code>. If the path name includes space characters, please enclose the path name in quotation marks (single or double):
                         <ol>
-                            <code><br />New-Item -ItemType File -Path "C:\Folder Name\Get-CultureTables.ps1"</code>
+                            <br />
+                            <br /><code>New-Item -ItemType File -Path "C:\Folder Name\Get-CultureTables.ps1"</code>
                         </ol>
                     <br />For more information, please type "<code>help New-Item -Full</code>".</li>
                 </p>
