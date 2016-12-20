@@ -343,19 +343,19 @@
                                     <td style="padding:6px"><strong>Description</strong></td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:6px">ISO 3166-1 Alpha-2 code</td>
+                                    <td style="padding:6px">ISO&nbsp;3166&#8209;1 Alpha&#8209;2 code</td>
                                     <td style="padding:6px">A two-letter code that represents a country name, recommended as the general purpose code.</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:6px">ISO 3166-1 Alpha-3 code</td>
+                                    <td style="padding:6px">ISO&nbsp;3166&#8209;1 Alpha&#8209;3 code</td>
                                     <td style="padding:6px">A three-letter code that represents a country name, which is usually more closely related to the country name.</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:6px">ISO 3166-1 Numeric-3 code</td>
+                                    <td style="padding:6px">ISO&nbsp;3166&#8209;1 Numeric&#8209;3 code</td>
                                     <td style="padding:6px">A three-digit numeric code that represents a country name.</td>
                                 </tr>                                
                                 <tr>
-                                    <td style="padding:6px">Alpha-4 code</td>
+                                    <td style="padding:6px">Alpha&#8209;4 code</td>
                                     <td style="padding:6px">A four-letter code that represents a country name that is no longer in use.</td>
                                 </tr>
                             </table>
