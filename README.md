@@ -335,7 +335,7 @@
                             </table>
                         </ol>
                     </li>
-                    <li>The ISO 3166-1 country codes in ISO 3166 can be represented either as a two-letter code (Alpha-2 code), which is recommended as the general purpose code, a three-letter code (Alpha-3 code), which is more closely related to the country name and/or a three digit numeric code (Numeric-3).
+                    <li>The <a href="http://www.iso.org/iso/country_codes_glossary.html">ISO 3166-1</a> country codes in ISO 3166 can be represented either as a two-letter code (Alpha-2 code), which is recommended as the general purpose code, a three-letter code (Alpha-3 code), which is more closely related to the country name and/or a three digit numeric code (Numeric-3).
                         <ol>
                             <table>
                                 <tr>
@@ -361,7 +361,7 @@
                             </table>
                         </ol>
                     </li>
-                    <li>The <a href="http://www.iso.org/iso/country_codes_glossary.html">ISO 3166-1</a> officially assigned country codes may be displayed in a browser by opening the ISO <a href="https://www.iso.org/obp/ui/#search">Online Browsing Platform (OBP) page</a> and clicking the following items:
+                    <li>The ISO 3166-1 officially assigned country codes may be displayed in a browser by opening the ISO <a href="https://www.iso.org/obp/ui/#search">Online Browsing Platform (OBP) page</a> and clicking the following items:
                        <ol>
                             <li>Country codes</li>
                             <li>:mag: (Search)</li>
