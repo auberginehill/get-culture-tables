@@ -72,7 +72,9 @@
 
 ### Screenshot
 
-<img class="screenshot" title="screenshot" alt="screenshot" height="80%" width="80%" src="https://raw.githubusercontent.com/auberginehill/get-culture-tables/master/Get-CultureTables.png">
+<ul><ul>
+<img class="screenshot" title="screenshot" alt="screenshot" height="75%" width="75%" src="https://raw.githubusercontent.com/auberginehill/get-culture-tables/master/Get-CultureTables.png">
+</ul></ul>
 
 
 
