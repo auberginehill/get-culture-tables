@@ -40,7 +40,7 @@
    </tr>
    <tr>
       <td style="padding:6px"><strong>Version:</strong></td>
-      <td style="padding:6px">1.0</td>
+      <td style="padding:6px">1.1</td>
    </tr>
    <tr>
         <td style="padding:6px"><strong>Sources:</strong></td>
@@ -53,10 +53,6 @@
                 <tr>
                     <td style="padding:6px">ps1:</td>
                     <td style="padding:6px"><a href="http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx">Test Internet connection</a> (or one of the <a href="https://web.archive.org/web/20110612212629/http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx">archive.org versions</a>)</td>
-                </tr>
-                <tr>
-                    <td style="padding:6px">Roman Kuzmin:</td>
-                    <td style="padding:6px"><a href="http://stackoverflow.com/questions/8163061/passing-a-function-to-powershells-replace-function">Passing a function to Powershell's (replace) function</a></td>
                 </tr>
                 <tr>
                     <td style="padding:6px">Ameer Deen:</td>
@@ -76,7 +72,7 @@
 
 ### Screenshot
 
-<img class="screenshot" title="screenshot" alt="screenshot" height="100%" width="100%" src="https://raw.githubusercontent.com/auberginehill/get-culture-tables/master/Get-CultureTables.png">
+<img class="screenshot" title="screenshot" alt="screenshot" height="80%" width="80%" src="https://raw.githubusercontent.com/auberginehill/get-culture-tables/master/Get-CultureTables.png">
 
 
 
@@ -500,11 +496,8 @@
         <td style="padding:6px"><a href="https://github.com/auberginehill/get-culture-tables">Script Homepage</a></td>
     </tr>
     <tr>
-        <th rowspan="5"></th>
+        <th rowspan="4"></th>
         <td style="padding:6px">ps1: <a href="http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx">Test Internet connection</a> (or one of the <a href="https://web.archive.org/web/20110612212629/http://powershell.com/cs/blogs/tips/archive/2011/05/04/test-internet-connection.aspx">archive.org versions</a>)</td>
-    </tr>
-    <tr>
-        <td style="padding:6px">Roman Kuzmin: <a href="http://stackoverflow.com/questions/8163061/passing-a-function-to-powershells-replace-function">Passing a function to Powershell's (replace) function</a></td>
     </tr>
     <tr>
         <td style="padding:6px">Ameer Deen: <a href="http://serverfault.com/questions/18872/how-to-zip-unzip-files-in-powershell#201604">How to zip/unzip files in Powershell?</a></td>
